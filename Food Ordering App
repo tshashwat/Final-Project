@@ -1,0 +1,193 @@
+import random
+
+foodList={ 1: ["Tandoori Chicken","4", "pieces", "INR", 0 , 240],
+           2: ["Vegan Burger","1","pieces","INR", 0, 320],
+           3: ["Truffle Cake","500","gm", "INR", 0, 900]
+         }
+def admin():
+    admin_input = int(input(" Choose the operation you want to execute \n\n 1. Add new food items \n 2. View list of all Food items \n 3. Stock left in restaurant \n 4. Edit food item using food ID \n 5. Remove food item using food ID \n 6. Main menu \n 7. Exit \n\n "))
+    if admin_input==1:
+        id = random.randrange(1,100,1)
+        food_desc=[]
+        food_desc.append(input("name of food : "))
+        food_desc.append(int(input("Quantity : ")))
+        food_desc.append(input("Quantity type(piece,gm or ml) : "))
+        food_desc.append("INR")
+        food_desc.append(int(input("Enter Discount ")))
+        food_desc.append(int(input("Enter Price per unit")))
+        foodList[id]=food_desc
+        admin()
+   
+    if admin_input==2:
+        view_list_of_food(foodList)
+        admin()
+    
+    if admin_input==3:
+        fs="Food Stock".center(50,"*")
+        print(fs)
+        for x, y in foodList.items():
+            print(y[0],y[1],y[2])
+        admin()
+    
+    if admin_input==4:
+        ef="Edit food".center(50,"*")
+        print(ef)
+        for x, y in foodList.items():
+            print(x,y)
+        print("Enter the the food item to be editted by choosing Food ID\n")
+        inp=int(input("Enter the food id : \n"))
+        
+        foodList.pop(inp)
+        food_desc=[]
+        food_desc.append(input("new name of food : "))
+        food_desc.append(int(input("Quantity : ")))
+        food_desc.append(input("Quantity type(piece,gram or ml) : "))
+        food_desc.append("INR")
+        food_desc.append(int(input("Enter Discount ")))
+        food_desc.append(int(input("Enter Price per unit")))
+        foodList[inp] = food_desc
+        
+        admin()
+    
+    if admin_input==5:
+        ef="Remove food".center(50,"*")
+        print(ef)
+        for x, y in foodList.items():
+            print(x,y)
+        print("Enter the the food item to be editted by choosing Food ID which is at front of the list\n")
+        inp=int(input("Enter the food id : \n"))
+        foodList.pop(inp)
+        admin()
+    
+    if admin_input==6:
+        admin_login()
+    
+    if admin_input==7:
+        exit()
+
+
+
+def view_list_of_food(foodList):
+    xe="Food Menu".center(50,"*")
+    print(xe)
+    for x, y in foodList.items():
+        print(x,y[0],y[1],y[2],y[3],y[5])
+        
+        
+
+def admin_login():
+    x="Welcome".center(50,"*")
+    print("\n\n")
+    print(x)
+    print("Login as : Admin or User.\n\n")
+    admin_user = int(input("Press 1 for Admin. Press 2 for User. Press 3 to EXIT \n\n\n"))
+    
+    if admin_user == 1:
+        i=0
+        while(i<5):
+            admin_id = input("Enter user ID : ")
+            admin_password = input("Enter Password : ")
+            if admin_id == "admin" and admin_password == "12345":
+                print()
+                print("Login Successful\n\n")
+                admin()
+                break
+            else:
+                print("\n")
+                print("Wrong username or password")
+                admin_login()
+            i+=1
+    if admin_user==2:
+        user_login_menu()
+    
+    if admin_user==3:
+        exit()
+    
+user_info=[]
+place_order=[]
+
+def user():
+    
+    xe="User Menu".center(50,"*")
+    print(xe)
+    
+    user_input = int(input(" 1. Place new order \n 2. Order History \n 3. Update User profile\n 4. Logout to Main Menu\n"))
+    
+    if user_input == 1:
+        view_list_of_food(foodList)
+        print("\n\n Enter the number in front of food item to place the order \n\n")
+        
+        plc = list(map(int,input("Space between every number \n").split()))
+        for p in plc:
+            place_order.append(p)
+        
+        for choice in place_order:
+            x = foodList[choice]
+            print("Your selected items : ",x)
+        
+        yn = input("Press y to confirm to place the order. Press n to reorder \n\n")
+        if yn =="y":
+            print("Your order has been placed\n\n")
+            user()
+        if yn =="n":
+            user()
+    
+    if user_input==2: 
+        
+        if len(place_order)==0:
+            print("There is no order placed yet. Please first place some order.\n")
+            user()
+        else:
+            print("Your order history are \n\n")
+            for choc in place_order:
+                x = foodList[choc]
+                print(x)
+            user()
+        
+        
+    if user_input==3:
+        ep = int(input("Press 1 to edit name, Press 2 to edit phone number, Press 3 to edit Email ID, Press 4 to edit Password of profile \n\n"))
+        if ep==1:
+            user_info[0] = input("New User name\n")
+        if ep==2:
+            user_info[1] = input("Enter new 10 digit phone number\n")
+        if ep==3:
+            user_info[2] = input("Enter new Email ID\n")
+        if ep==4:
+            user_info[3] = input("Enter new password\n")
+        user_login_menu()
+            
+
+def user_login():
+        print("Login to you new profile\n\n")
+        j = 0 
+        while(j<5):
+            user_id = input("Enter user ID : ")
+            user_password = input("Enter Password : ")
+            if user_id == user_info[2] and user_password == user_info[3]:
+                print()
+                print("Login Successful\n\n")
+                break
+            else:
+                print("Wrong username or password\n\n")
+                user_login()
+            j+=1
+        user()  
+
+
+def user_login_menu():
+    ui = int(input("Press 1 for New User Registration.\nPress 2 for main menu \n\n"))
+    
+    if ui == 1:
+        print("Please enter your info for registration\n\n")
+        user_info.append(input("Enter Full Name : "))
+        user_info.append(input("Enter 10 digit phone number : "))
+        user_info.append(input("Enter Email ID : "))
+        user_info.append(input("Set password for your profile : "))
+        print("\n\n Your profile ID is :",user_info[2], "  and your password is :",user_info[3])
+        user_login()
+    
+    if ui==2:
+        admin_login()
+
+admin_login()        
